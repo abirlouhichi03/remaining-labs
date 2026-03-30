@@ -1,20 +1,3 @@
-/*
-Story object structure:
-
-- objectID: unique identifier
-- title: article title
-- url: link to article
-- author: who posted it
-- points: popularity score
-- num_comments: number of comments
-
-React key: objectID
-Reason: it is unique and stable
-
-Why realistic?
-Because APIs return structured JSON data like this.
-*/
-
 
 const stories = [
   {
@@ -49,7 +32,20 @@ function App() {
   return (
     <div>
       <h1>Hacker News Stories</h1>
-       {stories.map((story) => {
+      <Header />
+      <Search />
+      <List /> 
+       
+    </div>
+  );
+}
+
+export default App;
+
+function List() {
+  return (
+    <div>
+      {stories.map((story) => {
         return (
           <div key={story.objectID}>
             <h3>
@@ -66,18 +62,29 @@ function App() {
     </div>
   );
 }
-
-export default App;
-
+function Search() {
+  return (
+    <div>
+      <label htmlFor="search">Search: </label>
+      <input type="text" id="search" />
+    </div>
+  );
+}
+function Header() {
+  return <h1>My Hacker News App 🚀</h1>;
+}
 /*
 Reflection:
 
-1. Why is map() essential?
-Because it allows us to transform arrays into UI elements dynamically.
+1. What does App do?
+It organizes and renders main components.
 
-2. Why is objectID the correct key?
-Because it is unique and stable for each item.
+2. What does List do?
+It displays the list of stories.
 
-3. What changes with real API?
-Data will be fetched dynamically instead of hardcoded.
+3. What does Search do?
+It displays the search input.
+
+4. Why cleaner?
+Because each component has one responsibility.
 */
