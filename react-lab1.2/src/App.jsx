@@ -1,5 +1,9 @@
+import { useState } from "react";
 
-const stories = [
+const App = () => {
+  console.log("App rendered");
+  
+  const stories = [
   {
     objectID: 1,
     title: "React is Awesome",
@@ -24,31 +28,40 @@ const stories = [
   points: 200,
   num_comments: 60
   }
-];
-const App = () => {
+  ];
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const filteredStories = stories.filter((story) =>
+  story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <h1>Hacker News Stories</h1>
+      <List stories={filteredStories} />
       <Header />
-      <Search />
-      <List />
+      <Search onSearch={handleSearch}/>
     </div>
   );
 };
 
 export default App;
 
-const List = () => (
-  <div>
-    {stories.map((story) => (
-      <div key={story.objectID}>
-        <p>{story.title}</p>
-      </div>
-    ))}
-  </div>
-);
-const Search = () => {
+const List = ({ stories }) => {
+  console.log("List rendered");
 
+  return (
+    <div>
+      {stories.map((story) => (
+        <Item key={story.objectID} story={story} />
+      ))}
+    </div>
+  );
+};
+const Search = ({ onSearch }) => {
+  console.log("Search rendered");
   const handleChange = (event) => {
     console.log(event.target.value);
     console.log("User is typing...");
@@ -57,23 +70,33 @@ const Search = () => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
-      <input type="text" id="search" />
+      <input
+        type="text"
+        id="search"
+        onChange={onSearch}
+      />
     </div>
   );
 };
 const Header = () => {
   return <h1>My Hacker News App 🚀</h1>;
 };
-
+const Item = ({ story }) => {
+  console.log("Item rendered");
+  return (
+    <div>
+      <p>{story.title}</p>
+    </div>
+  );
+};
 /*
-Reflection:
+1. Props vs State:
+Props = passed data
+State = internal, changeable data
 
-1. Concise body:
-Used when returning one simple expression.
+2. Why lift state?
+To share data between components
 
-2. Block body:
-Used when we need logic (variables, functions).
-
-3. Event object:
-Contains information about the event (input value, target, etc).
+3. Where filtering?
+Inside App (central logic)
 */
